@@ -60,6 +60,11 @@ namespace Npgsql
         // Npgsql > 4.0 does strict type checks on integral values and fails with enums passed with numeric DbType.
         static void ConvertValueToNumericIfEnum(DbParameter parameter)
         {
+            if (parameter.Value == null)
+            {
+                return;
+            }
+
             var parameterValueObjectType = parameter.Value.GetType();
 
             if (!parameterValueObjectType.IsEnum)
@@ -79,6 +84,7 @@ namespace Npgsql
             DbInsertCommandTree insert;
             DbUpdateCommandTree update;
             DbDeleteCommandTree delete;
+            DbFunctionCommandTree function;
             if ((select = commandTree as DbQueryCommandTree) != null)
                 sqlGenerator = new SqlSelectGenerator(select);
             else if ((insert = commandTree as DbInsertCommandTree) != null)
@@ -87,6 +93,8 @@ namespace Npgsql
                 sqlGenerator = new SqlUpdateGenerator(update);
             else if ((delete = commandTree as DbDeleteCommandTree) != null)
                 sqlGenerator = new SqlDeleteGenerator(delete);
+            else if ((function = commandTree as DbFunctionCommandTree) != null)
+                sqlGenerator = new SqlFunctionGenerator(function);
             else
             {
                 // TODO: get a message (unsupported DbCommandTree type)
