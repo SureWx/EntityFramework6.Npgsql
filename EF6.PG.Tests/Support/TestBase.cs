@@ -3,7 +3,6 @@ using NLog.Config;
 using NLog.Targets;
 using NLog;
 using Npgsql;
-using Npgsql.Logging;
 
 using NUnit.Framework;
 

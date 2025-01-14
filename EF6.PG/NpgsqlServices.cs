@@ -145,12 +145,6 @@ namespace Npgsql
                 sb.Append("CREATE DATABASE \"");
                 sb.Append(connection.Database);
                 sb.Append("\"");
-                if (conn.Settings.EntityTemplateDatabase != null)
-                {
-                    sb.Append(" TEMPLATE \"");
-                    sb.Append(conn.Settings.EntityTemplateDatabase);
-                    sb.Append("\"");
-                }
 
                 using (var  command = new NpgsqlCommand(sb.ToString(), conn))
                     command.ExecuteNonQuery();
@@ -172,7 +166,7 @@ namespace Npgsql
         {
             var connectionBuilder = new NpgsqlConnectionStringBuilder(connection.ConnectionString)
             {
-                Database = connection.Settings.EntityAdminDatabase ?? "template1",
+                Database = "template1",
                 Pooling = false
             };
 

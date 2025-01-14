@@ -97,24 +97,32 @@ namespace Npgsql.SqlGenerators
             ((NpgsqlCommand)command).UnknownResultTypeList = pe.Projection.Arguments.Select(a => ((PrimitiveType)((ColumnExpression)a).ColumnType.EdmType).PrimitiveTypeKind == PrimitiveTypeKind.String).ToArray();
 
             // We must treat sbyte and DateTimeOffset specially so the value is read correctly
-            if (pe.Projection.Arguments.Any(a => {
-                var kind = ((PrimitiveType)((ColumnExpression)a).ColumnType.EdmType).PrimitiveTypeKind;
-                return kind == PrimitiveTypeKind.SByte || kind == PrimitiveTypeKind.DateTimeOffset;
-            }))
-            {
-                ((NpgsqlCommand)command).ObjectResultTypes = pe.Projection.Arguments.Select(a =>
+            if (pe.Projection.Arguments.Any(a =>
                 {
                     var kind = ((PrimitiveType)((ColumnExpression)a).ColumnType.EdmType).PrimitiveTypeKind;
-                    switch (kind)
+                    return kind == PrimitiveTypeKind.SByte || kind == PrimitiveTypeKind.DateTimeOffset;
+                }))
+            {
+                try
+                {
+                    ((NpgsqlCommand)command).ObjectResultTypes = pe.Projection.Arguments.Select(a =>
                     {
-                    case PrimitiveTypeKind.SByte:
-                        return typeof(sbyte);
-                    case PrimitiveTypeKind.DateTimeOffset:
-                        return typeof(DateTimeOffset);
-                    default:
-                        return null;
-                    }
-                }).ToArray();
+                        var kind = ((PrimitiveType)((ColumnExpression)a).ColumnType.EdmType).PrimitiveTypeKind;
+                        switch (kind)
+                        {
+                        case PrimitiveTypeKind.SByte:
+                            return typeof(sbyte);
+                        case PrimitiveTypeKind.DateTimeOffset:
+                            return typeof(DateTimeOffset);
+                        default:
+                            return null;
+                        }
+                    }).ToArray();
+                }
+                catch
+                {
+                    throw new NotSupportedException("DateTimeOffset is not supported.");
+                }
             }
         }
     }

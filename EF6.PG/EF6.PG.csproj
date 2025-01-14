@@ -5,9 +5,9 @@
     <Copyright>Copyright 2020 © The Npgsql Development Team</Copyright>
     <Company>Npgsql</Company>
     <PackageTags>npgsql postgresql postgres data database entity framework ef orm</PackageTags>
-    <VersionPrefix>6.4.3</VersionPrefix>
+    <VersionPrefix>6.4.4</VersionPrefix>
     <LangVersion>latest</LangVersion>
-    <TargetFrameworks>net45;net461;netstandard21</TargetFrameworks>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>CS1591</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -24,34 +24,19 @@
     <RepositoryUrl>git://github.com/npgsql/EntityFramework6.Npgsql</RepositoryUrl>
     <Deterministic>true</Deterministic>
     <PackageId>SureWx.EntityFramework6.Npgsql</PackageId>
-    <Version>6.4.3</Version>
+    <Version>6.4.4</Version>
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources/*" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="content/App.config.install.xdt" Pack="true" PackagePath="content/net45" />
-    <None Include="content/net45/App.config.transform" Pack="true" PackagePath="content/net45" />
-    <None Include="content/Web.config.install.xdt" Pack="true" PackagePath="content/net45" />
-    <None Include="content/net45/Web.config.transform" Pack="true" PackagePath="content/net45" />
-
     <None Include="content/App.config.install.xdt" Pack="true" PackagePath="content/net461" />
-    <None Include="content/net461/App.config.transform" Pack="true" PackagePath="content/net461" />
     <None Include="content/Web.config.install.xdt" Pack="true" PackagePath="content/net461" />
-    <None Include="content/net461/Web.config.transform" Pack="true" PackagePath="content/net461" />
     
     <None Include="postgresql.png" Pack="true" PackagePath="" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-  </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
     <PackageReference Include="Npgsql" />
     <PackageReference Include="EntityFramework" />
   </ItemGroup>
